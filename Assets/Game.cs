@@ -67,6 +67,10 @@ public class Game : MonoBehaviour
             (x + 1, y, hwalls, x + 1, y, Vector3.right, 90, KeyCode.D),
             (x, y - 1, vwalls, x, y, Vector3.up, 0, KeyCode.S),
             (x, y + 1, vwalls, x, y + 1, Vector3.up, 0, KeyCode.W),
+			(x - 1, y, hwalls, x, y, Vector3.right, 90, KeyCode.LeftArrow),
+            (x + 1, y, hwalls, x + 1, y, Vector3.right, 90, KeyCode.RightArrow),
+            (x, y - 1, vwalls, x, y, Vector3.up, 0, KeyCode.DownArrow),
+            (x, y + 1, vwalls, x, y + 1, Vector3.up, 0, KeyCode.UpArrow),
         };
         foreach (var (nx, ny, wall, wx, wy, sh, ang, k) in dirs.OrderBy(d => Random.value))
             if (Input.GetKeyDown(k))
