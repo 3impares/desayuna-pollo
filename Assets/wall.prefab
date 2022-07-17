@@ -27,11 +27,11 @@ Transform:
   m_GameObject: {fileID: 2252321324572638381}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -4.498, y: -2.942, z: 0}
-  m_LocalScale: {x: 0.28029218, y: 0.28029218, z: 0.28029218}
+  m_LocalScale: {x: 0.2902922, y: 0.28029218, z: 0.28029218}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2252321324572638382
 SpriteRenderer:
@@ -112,4 +112,4 @@ MonoBehaviour:
   - {x: 1.6946124, y: -0.117460795, z: 0}
   m_ShapePathHash: -349714918
   m_Mesh: {fileID: 0}
-  m_InstanceId: -35938
+  m_InstanceId: 61994
