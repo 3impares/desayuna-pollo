@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player : NetworkBehaviour 
 { 
-    public int w, h, x, y;
+    public int x, y;
     public int id;
     public bool[,] hwalls, vwalls;
  
@@ -39,10 +39,8 @@ public class Player : NetworkBehaviour
         transform.position = Vector3.Lerp(transform.position, new Vector3(x, y), Time.deltaTime * 12);
     }
 
-    public void setPlayer(int w, int h, int x, int y, bool[,] hwalls, bool[,] vwalls)
+    public void setPlayer(int x, int y, bool[,] hwalls, bool[,] vwalls)
     {
-        this.w = w;
-        this.h = h;
         this.x = x;
         this.y = y;
         this.hwalls = hwalls;

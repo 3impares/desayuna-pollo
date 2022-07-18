@@ -70,7 +70,7 @@ public class Game : NetworkBehaviour
                 p.transform.position = new Vector3(localx, localy);
             } 
             while (Vector3.Distance( p.transform.position, goal.position) < (w + h) / 4);
-            p.setPlayer(w, h, localx, localy, hwalls, vwalls);
+            p.setPlayer(localx, localy, hwalls, vwalls);
         }
         
         cam.m_Lens.OrthographicSize = Mathf.Pow(w / 3 + h / 2, 0.7f) + 1;
