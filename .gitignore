@@ -62,5 +62,6 @@ crashlytics-build.properties
 # ficheros de versiones de Unity
 ProjectSettings/ShaderGraphSettings.asset
 ProjectSettings/ProjectVersion.txt
-Packages/packages-lock.json
+*packages-lock.json
+ProjectSettings/Packages/com.unity.learn.iet-framework/Settings.json
 
