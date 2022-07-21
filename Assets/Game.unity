@@ -223,7 +223,6 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 6344002868791176513, guid: b7a262a54f3c57e42834ca4dc570f785, type: 3}
@@ -307,7 +306,6 @@ PrefabInstance:
       value: Player_2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: b7a262a54f3c57e42834ca4dc570f785, type: 3}
 --- !u!1 &378536429 stripped
 GameObject:
@@ -387,7 +385,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1834193180}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &479254190
 MonoBehaviour:
@@ -455,7 +453,6 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 6344002868791176513, guid: b7a262a54f3c57e42834ca4dc570f785, type: 3}
@@ -515,7 +512,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: b7a262a54f3c57e42834ca4dc570f785, type: 3}
 --- !u!1 &801161293 stripped
 GameObject:
@@ -839,7 +835,6 @@ MonoBehaviour:
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
-  m_AlphaBlendOnOverlap: 0
   m_OverlapOperation: 0
   m_NormalMapDistance: 3
   m_NormalMapQuality: 2
@@ -1041,7 +1036,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.3333334, y: 1}
+    m_SensorSize: {x: 2.3107104, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -1082,7 +1077,7 @@ MonoBehaviour:
   - {fileID: 1511213099}
   - {fileID: 378536431}
   - {fileID: 801161294}
-  holep: 0.012
+  holep: 0.79
   w: 3
   h: 3
   x: 0
@@ -1113,7 +1108,6 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 6344002868791176513, guid: b7a262a54f3c57e42834ca4dc570f785, type: 3}
@@ -1205,5 +1199,4 @@ PrefabInstance:
       value: Player_1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: b7a262a54f3c57e42834ca4dc570f785, type: 3}
