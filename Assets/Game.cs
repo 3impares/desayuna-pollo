@@ -30,27 +30,45 @@ public class Game : NetworkBehaviour
 
         hwalls = new bool[w + 1, h];
         vwalls = new bool[w, h + 1];
+        //en realidad hwalls guarda los muros verticales y vwalls los horizontales
         var st = new int[w, h];
+        //st es una matriz que representa las casillas para cada casilla el valor es:
+        //0:casilla no inicializada
+        //1:casilla inicializada pero no terminada
+        //2: casilla con las 4 paredes hechas
 
         void dfs(int x, int y)
         {
             st[x, y] = 1;
             Instantiate(floor, new Vector3(x, y), Quaternion.identity, level);
-
+            //la matriz dirs se estructura de las siguiente manera:
+            //(nx, ny, bwall, wx, wy, sh, ang, k)
+            //nx y ny te dan las coordenadas de la casilla adyacente en esa posicion
+            //bwall te indica que matriz de muros hay que mirar hwalls (muros verticales) para movimientos en horizontal y viceversa
+            //wx y wy cooordenadas del muro dentro de su matriz
+            //sh y ang sirven para colocar el gameobject del muro en la posicion que toca
+            //k es la tecla para mover en esa direccion que no se usa aqui y la voy a quitar
             var dirs = new[]
             {
-                (x - 1, y, hwalls, x, y, Vector3.right, 90, KeyCode.A),
-                (x + 1, y, hwalls, x + 1, y, Vector3.right, 90, KeyCode.D),
-                (x, y - 1, vwalls, x, y, Vector3.up, 0, KeyCode.S),
-                (x, y + 1, vwalls, x, y + 1, Vector3.up, 0, KeyCode.W),
+                (x - 1, y, hwalls, x, y, Vector3.right, 90),//derecha
+                (x + 1, y, hwalls, x + 1, y, Vector3.right, 90),//izquierda
+                (x, y - 1, vwalls, x, y, Vector3.up, 0),//abajo
+                (x, y + 1, vwalls, x, y + 1, Vector3.up, 0),//arriba
             };
-            foreach (var (nx, ny, bwall, wx, wy, sh, ang, k) in dirs.OrderBy(d => Random.value))
-                if (!(0 <= nx && nx < w && 0 <= ny && ny < h) || (st[nx, ny] == 2 && Random.value > holep))
-                {
+
+            foreach (var (nx, ny, bwall, wx, wy, sh, ang) in dirs.OrderBy(d => Random.value))
+            {
+                if ((nx < 0 || nx >= w || ny < 0 || ny >= h) || (st[nx, ny] == 2 && Random.value > holep))
+                {//la primera condicion es para ver si es un borde del tablero siempre pone muro
+                    //la segunda solo pone si la casilla esta completa ya
                     bwall[wx, wy] = true;
                     Instantiate(wall, new Vector3(wx, wy) - sh / 2, Quaternion.Euler(0, 0, ang), level);
                 }
-                else if (st[nx, ny] == 0) dfs(nx, ny);
+                else if (st[nx, ny] == 0)
+                {
+                    dfs(nx, ny);
+                }
+            }
             st[x, y] = 2;
         }
         dfs(0, 0);
