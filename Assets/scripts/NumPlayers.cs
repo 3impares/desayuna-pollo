@@ -12,6 +12,9 @@ public class NumPlayers : MonoBehaviour
     private int numplayers;
     private int currentPlayer;
     public GameObject nickText;
+    private int currentKey = -1;
+    public GameObject warning;
+    public TextMeshProUGUI[] keys;
     public void selectNumPlayers(int num)
     {
         numplayers = num;
@@ -32,13 +35,8 @@ public class NumPlayers : MonoBehaviour
     {
         //nick
         players[currentPlayer].nickname = nickText.GetComponent<TMP_InputField>().text;
-
-        //keys
-        
         
         //skin
-        
-        
         if (currentPlayer == numplayers-1)
         {
             ChangeScene.loadScene("Game");
@@ -49,5 +47,31 @@ public class NumPlayers : MonoBehaviour
             currentPlayer++;
             currentText.text = "Player " + (int)(currentPlayer + 1);
         }
+    }
+
+    public void listenerKeys(int key)
+    {
+        currentKey = key;
+    }
+    
+    void OnGUI()
+    {
+        if (currentKey!=-1)
+        {
+            warning.SetActive(true);
+            Event e = Event.current;
+            if (e.isKey && e.type == EventType.KeyDown && e.keyCode != KeyCode.None)
+            {
+                if (players[currentPlayer].keys == null)
+                {
+                    players[currentPlayer].keys = new KeyCode[4];
+                }
+                players[currentPlayer].keys[currentKey] = e.keyCode;
+                keys[currentKey].text = e.keyCode.ToString();
+                currentKey = -1;
+                warning.SetActive(false);
+            }
+        }
+ 
     }
 }
