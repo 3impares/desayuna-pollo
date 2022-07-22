@@ -7,6 +7,8 @@ public class Player : NetworkBehaviour
     public int x, y;
     public int id;
     public bool[,] hwalls, vwalls;
+    private int currentScore;
+    public string nickname;
  
     public override void OnNetworkSpawn() {
         if (!IsOwner) Destroy(this);
@@ -45,5 +47,27 @@ public class Player : NetworkBehaviour
         this.y = y;
         this.hwalls = hwalls;
         this.vwalls = vwalls;
+    }
+
+    public int getScore() {
+        return this.currentScore;
+    }
+
+    public string getNickname() {
+        return this.nickname;
+    }
+
+    public void victory() {
+        this.currentScore += 1;
+    }
+
+    public void initPlayer (string nickname) {
+        //Al crearse el jugador cada partida, la puntuación es cero.
+        this.currentScore=0;
+        this.nickname = nickname;
+    }
+
+    public bool isParentActive(){
+        return true;//transform.parent.activeSelf;
     }
 }

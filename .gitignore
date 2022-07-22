@@ -65,3 +65,7 @@ ProjectSettings/ProjectVersion.txt
 *packages-lock.json
 ProjectSettings/Packages/com.unity.learn.iet-framework/Settings.json
 
+
+#User Settings
+UserSettings/
+

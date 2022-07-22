@@ -8,6 +8,7 @@ using Cinemachine;
 using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Game : NetworkBehaviour
 {
@@ -18,6 +19,13 @@ public class Game : NetworkBehaviour
     public Transform level, goal;
     public GameObject floor, wall;
     public CinemachineVirtualCamera cam;
+
+    //contador de jugadores, provisional mientras se automatiza el nombre de los players
+    public int numPlayers;
+
+    public Text scores;
+
+    public int currentLevel = 0;
     
     public override void OnNetworkSpawn() {
         if (!IsOwner) Destroy(this);
@@ -25,6 +33,11 @@ public class Game : NetworkBehaviour
 
     void Start()
     {
+        this.currentLevel++;
+
+        updateScores();
+
+
         foreach (Transform child in level)
             Destroy(child.gameObject);
 
@@ -78,7 +91,10 @@ public class Game : NetworkBehaviour
         
         goal.position = new Vector3(x, y);
         foreach (Player p in players)
-        {
+        {   
+            //contador de jugadores, provisional mientras se automatiza el nombre de los players
+            numPlayers++;
+
             var localx = 0;
             var localy = 0;
             do
@@ -89,6 +105,11 @@ public class Game : NetworkBehaviour
             } 
             while (Vector3.Distance( p.transform.position, goal.position) < (w + h) / 4);
             p.setPlayer(localx, localy, hwalls, vwalls);
+            
+            if (this.currentLevel==1 && p.nickname==null){
+                p.initPlayer("Player_"+numPlayers); 
+            }
+
         }
         
         cam.m_Lens.OrthographicSize = Mathf.Pow(w / 3 + h / 2, 0.7f) + 1;
@@ -102,8 +123,30 @@ public class Game : NetworkBehaviour
             {
                 if (Random.Range(0, 5) < 3) w++;
                 else h++;
+
+                //Se actualiza la puntuación al ganador
+                p.victory();
+                Debug.Log("Nivel " + this.currentLevel + " terminado: El jugador " + p.getNickname() + " gana un punto y ahora tiene " + p.getScore() + " puntos");
+
                 Start();
             }
         }
+
+
     }
+
+    void updateScores() {
+        
+        scores.text = "";
+
+        foreach (Player p in players)
+        {
+            if (p.isActiveAndEnabled){ //comprueba que el object esté activo
+               scores.text += p.getNickname().PadRight(12) + "\t" + p.getScore() + "\n";
+            }
+        }        
+
+        //Debug.Log(t); 
+    }
+
 }
