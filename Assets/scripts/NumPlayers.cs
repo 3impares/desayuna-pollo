@@ -11,11 +11,12 @@ public class NumPlayers : MonoBehaviour
     public TextMeshProUGUI currentText;
     public DataPlayer[] players;
     private int numplayers;
-    private int currentPlayer;
+    private int currentPlayer=-1;
     public GameObject nickText;
     private int currentKey = -1;
     public GameObject warning;
     public TextMeshProUGUI[] keys;
+    public Button done;
     public void selectNumPlayers(int num)
     {
         numplayers = num;
@@ -34,10 +35,8 @@ public class NumPlayers : MonoBehaviour
 
     public void playerReady()
     {
-        //nick
         players[currentPlayer].nickname = nickText.GetComponent<TMP_InputField>().text;
         
-        //skin
         if (currentPlayer == numplayers-1)
         {
             ChangeScene.loadScene("Game");
@@ -77,6 +76,41 @@ public class NumPlayers : MonoBehaviour
                 warning.SetActive(false);
             }
         }
- 
+    }
+
+    private void Update()
+    {
+        done.interactable = valid();
+    }
+
+    public void inputNick()
+    {
+        players[currentPlayer].nickname = nickText.GetComponent<TMP_InputField>().text;
+    }
+    private bool valid()
+    {
+        if (currentPlayer==-1 || players==null || players[currentPlayer] == null)
+        {
+            return false;
+        }
+        bool nickvoid = players[currentPlayer].nickname == null || players[currentPlayer].nickname == "";
+        bool incorrectkeys = false;
+        if (players[currentPlayer].keys != null)
+        {
+            foreach (var key in players[currentPlayer].keys)
+            {
+                print(key);
+                if (key == null || key == KeyCode.None || key == KeyCode.Minus)
+                {
+                    incorrectkeys = true;
+                }
+            }
+        }
+        else
+        {
+            incorrectkeys = true;
+        }
+        
+        return !nickvoid && !incorrectkeys;
     }
 }
