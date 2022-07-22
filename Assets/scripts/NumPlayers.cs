@@ -1,4 +1,5 @@
 
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -43,7 +44,11 @@ public class NumPlayers : MonoBehaviour
         }else{
             nickText.GetComponent<TMP_InputField>().Select();
             nickText.GetComponent<TMP_InputField>().text = "";
-            
+            for (var i = 0; i < 4; i++)
+            {
+                players[currentPlayer].keys[i] = (KeyCode)Enum.Parse(typeof(KeyCode), keys[i].text);
+                keys[i].text = "-";
+            }
             currentPlayer++;
             currentText.text = "Player " + (int)(currentPlayer + 1);
         }
