@@ -21,6 +21,8 @@ public class Skin : MonoBehaviour
         if(locked){
             GetComponent<Button>().interactable = false;
         }
+        
+
     }
 
     public void chooseSkin()

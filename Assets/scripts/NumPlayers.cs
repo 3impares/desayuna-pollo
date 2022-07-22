@@ -1,4 +1,5 @@
 
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,13 +11,16 @@ public class NumPlayers : MonoBehaviour
     public TextMeshProUGUI currentText;
     public DataPlayer[] players;
     private int numplayers;
-    private int currentPlayer;
+    private int currentPlayer=-1;
     public GameObject nickText;
 
     private string[] filesSkins;
     public GameObject skinPrefab;
 
-
+    private int currentKey = -1;
+    public GameObject warning;
+    public TextMeshProUGUI[] keys;
+    public Button done;
     public void selectNumPlayers(int num)
     {
         numplayers = num;
@@ -37,7 +41,6 @@ public class NumPlayers : MonoBehaviour
 
     public void playerReady()
     {
-        //nick
         players[currentPlayer].nickname = nickText.GetComponent<TMP_InputField>().text;
 
         //keys
@@ -59,33 +62,33 @@ public class NumPlayers : MonoBehaviour
         }
         print("Seleccionada la skin: " + players[currentPlayer].skin);
         
-        
         if (currentPlayer == numplayers-1)
         {
             ChangeScene.loadScene("Game");
         }else{
             nickText.GetComponent<TMP_InputField>().Select();
             nickText.GetComponent<TMP_InputField>().text = "";
-            
+            for (var i = 0; i < 4; i++)
+            {
+                players[currentPlayer].keys[i] = (KeyCode)Enum.Parse(typeof(KeyCode), keys[i].text);
+                keys[i].text = "-";
+            }
             currentPlayer++;
             currentText.text = "Player " + (int)(currentPlayer + 1);
         }
     }
-    
 
     private void loadSkins(){
 
         string path = @"Assets/Resources/skins/";
         
         filesSkins = System.IO.Directory.GetFiles(path, "*.asset");
-        print(filesSkins[0]); //Aquí sí lo coge
         
         GameObject div_skins = GameObject.Find("skins");
 
         foreach(string filePath in filesSkins){
             GameObject newObj = Instantiate(skinPrefab, div_skins.transform);
             //div_skins.AddComponent(typeof(Image));
-            print(filePath.Replace("Assets/Resources/","").Replace(".asset",""));
             Sprite spriteLoad = Resources.Load<Sprite>(filePath.Replace("Assets/Resources/","").Replace(".asset",""));
             newObj.GetComponent<Image>().sprite = spriteLoad;
 
@@ -96,4 +99,65 @@ public class NumPlayers : MonoBehaviour
 
 
 
+
+    public void listenerKeys(int key)
+    {
+        currentKey = key;
+    }
+    
+    void OnGUI()
+    {
+        if (currentKey!=-1)
+        {
+            warning.SetActive(true);
+            Event e = Event.current;
+            if (e.isKey && e.type == EventType.KeyDown && e.keyCode != KeyCode.None)
+            {
+                if (players[currentPlayer].keys == null)
+                {
+                    players[currentPlayer].keys = new KeyCode[4];
+                }
+                players[currentPlayer].keys[currentKey] = e.keyCode;
+                keys[currentKey].text = e.keyCode.ToString();
+                currentKey = -1;
+                warning.SetActive(false);
+            }
+        }
+    }
+
+    private void Update()
+    {
+        done.interactable = valid();
+    }
+
+    public void inputNick()
+    {
+        players[currentPlayer].nickname = nickText.GetComponent<TMP_InputField>().text;
+    }
+    private bool valid()
+    {
+        if (currentPlayer==-1 || players==null || players[currentPlayer] == null)
+        {
+            return false;
+        }
+        bool nickvoid = players[currentPlayer].nickname == null || players[currentPlayer].nickname == "";
+        bool incorrectkeys = false;
+        if (players[currentPlayer].keys != null)
+        {
+            foreach (var key in players[currentPlayer].keys)
+            {
+                print(key);
+                if (key == null || key == KeyCode.None || key == KeyCode.Minus)
+                {
+                    incorrectkeys = true;
+                }
+            }
+        }
+        else
+        {
+            incorrectkeys = true;
+        }
+        
+        return !nickvoid && !incorrectkeys;
+    }
 }
