@@ -9,7 +9,8 @@ public class Player : NetworkBehaviour
     public bool[,] hwalls, vwalls;
     private int currentScore;
     public string nickname;
- 
+    public KeyCode[] keys;
+
     public override void OnNetworkSpawn() {
         if (!IsOwner) Destroy(this);
     }
