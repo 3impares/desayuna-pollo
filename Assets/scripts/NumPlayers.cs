@@ -71,14 +71,15 @@ public class NumPlayers : MonoBehaviour
             ChangeScene.loadScene("Game",players);
         }else{
             print(players[0].nickname);
+            currentPlayer++;
             nickText.GetComponent<TMP_InputField>().Select();
-            nickText.GetComponent<TMP_InputField>().textComponent.text = "";
+            nickText.GetComponent<TMP_InputField>().text = "";
             for (var i = 0; i < 4; i++)
             {
                 keys[i].text = "-";
             }
             currentKey = -1;
-            currentPlayer++;
+            
             currentText.text = "Player " + (int)(currentPlayer + 1);
             print(players[0].nickname);
         }
