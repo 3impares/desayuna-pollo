@@ -43,8 +43,9 @@ public class NumPlayers : MonoBehaviour
 
     public void playerReady()
     {
-        players[currentPlayer].nickname = nickText.GetComponent<TMP_InputField>().text;
-        
+
+        players[currentPlayer].nickname = new String(nickText.GetComponent<TMP_InputField>().text.ToString());
+
         for (var i = 0; i < 4; i++)
         {
             players[currentPlayer].keys[i] = (KeyCode)Enum.Parse(typeof(KeyCode), keys[i].text);
@@ -69,6 +70,7 @@ public class NumPlayers : MonoBehaviour
         {
             ChangeScene.loadScene("Game",players);
         }else{
+            print(players[0].nickname);
             nickText.GetComponent<TMP_InputField>().Select();
             nickText.GetComponent<TMP_InputField>().text = "";
             for (var i = 0; i < 4; i++)
@@ -78,6 +80,7 @@ public class NumPlayers : MonoBehaviour
             currentKey = -1;
             currentPlayer++;
             currentText.text = "Player " + (int)(currentPlayer + 1);
+            print(players[0].nickname);
         }
     }
 
