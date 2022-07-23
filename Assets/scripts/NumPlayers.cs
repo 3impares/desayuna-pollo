@@ -44,7 +44,7 @@ public class NumPlayers : MonoBehaviour
     public void playerReady()
     {
 
-        players[currentPlayer].nickname = new String(nickText.GetComponent<TMP_InputField>().text.ToString());
+        players[currentPlayer].nickname = nickText.GetComponent<TMP_InputField>().textComponent.text;
 
         for (var i = 0; i < 4; i++)
         {
@@ -72,7 +72,7 @@ public class NumPlayers : MonoBehaviour
         }else{
             print(players[0].nickname);
             nickText.GetComponent<TMP_InputField>().Select();
-            nickText.GetComponent<TMP_InputField>().text = "";
+            nickText.GetComponent<TMP_InputField>().textComponent.text = "";
             for (var i = 0; i < 4; i++)
             {
                 keys[i].text = "-";
