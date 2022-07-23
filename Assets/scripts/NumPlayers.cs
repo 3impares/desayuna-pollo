@@ -21,6 +21,7 @@ public class NumPlayers : MonoBehaviour
     public GameObject warning;
     public TextMeshProUGUI[] keys;
     public Button done;
+    private bool skinChosen = false;
     public void selectNumPlayers(int num)
     {
         numplayers = num;
@@ -42,11 +43,12 @@ public class NumPlayers : MonoBehaviour
     public void playerReady()
     {
         players[currentPlayer].nickname = nickText.GetComponent<TMP_InputField>().text;
-
-        //keys
         
+        for (var i = 0; i < 4; i++)
+        {
+            players[currentPlayer].keys[i] = (KeyCode)Enum.Parse(typeof(KeyCode), keys[i].text);
+        }
         
-        //skin
         Skin[] listaSkins;
         GameObject div_skins = GameObject.Find("skins");
 
@@ -70,9 +72,10 @@ public class NumPlayers : MonoBehaviour
             nickText.GetComponent<TMP_InputField>().text = "";
             for (var i = 0; i < 4; i++)
             {
-                players[currentPlayer].keys[i] = (KeyCode)Enum.Parse(typeof(KeyCode), keys[i].text);
                 keys[i].text = "-";
             }
+
+            skinChosen = false;
             currentPlayer++;
             currentText.text = "Player " + (int)(currentPlayer + 1);
         }
@@ -88,18 +91,17 @@ public class NumPlayers : MonoBehaviour
 
         foreach(string filePath in filesSkins){
             GameObject newObj = Instantiate(skinPrefab, div_skins.transform);
-            //div_skins.AddComponent(typeof(Image));
             Sprite spriteLoad = Resources.Load<Sprite>(filePath.Replace("Assets/Resources/","").Replace(".asset",""));
             newObj.GetComponent<Image>().sprite = spriteLoad;
-
-            
         }
 
     }
 
-
-
-
+    public void listenerSkin()
+    {
+        skinChosen = true;
+    }
+    
     public void listenerKeys(int key)
     {
         currentKey = key;
@@ -146,8 +148,7 @@ public class NumPlayers : MonoBehaviour
         {
             foreach (var key in players[currentPlayer].keys)
             {
-                print(key);
-                if (key == null || key == KeyCode.None || key == KeyCode.Minus)
+                if (key == KeyCode.None || key == KeyCode.Minus)
                 {
                     incorrectkeys = true;
                 }
@@ -158,6 +159,6 @@ public class NumPlayers : MonoBehaviour
             incorrectkeys = true;
         }
         
-        return !nickvoid && !incorrectkeys;
+        return !nickvoid && !incorrectkeys && skinChosen;
     }
 }
