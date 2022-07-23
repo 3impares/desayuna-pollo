@@ -14,6 +14,8 @@ public class NumPlayers : MonoBehaviour
     private int currentPlayer=-1;
     public GameObject nickText;
 
+    private GameObject div_skins;
+
     private string[] filesSkins;
     public GameObject skinPrefab;
 
@@ -21,7 +23,6 @@ public class NumPlayers : MonoBehaviour
     public GameObject warning;
     public TextMeshProUGUI[] keys;
     public Button done;
-    private bool skinChosen = false;
     public void selectNumPlayers(int num)
     {
         numplayers = num;
@@ -50,7 +51,7 @@ public class NumPlayers : MonoBehaviour
         }
         
         Skin[] listaSkins;
-        GameObject div_skins = GameObject.Find("skins");
+        div_skins = GameObject.Find("skins");
 
         listaSkins = div_skins.GetComponentsInChildren<Skin>();
         foreach(Skin s in listaSkins){
@@ -66,7 +67,7 @@ public class NumPlayers : MonoBehaviour
         
         if (currentPlayer == numplayers-1)
         {
-            ChangeScene.loadScene("Game");
+            ChangeScene.loadScene("Game",players);
         }else{
             nickText.GetComponent<TMP_InputField>().Select();
             nickText.GetComponent<TMP_InputField>().text = "";
@@ -74,8 +75,7 @@ public class NumPlayers : MonoBehaviour
             {
                 keys[i].text = "-";
             }
-
-            skinChosen = false;
+            currentKey = -1;
             currentPlayer++;
             currentText.text = "Player " + (int)(currentPlayer + 1);
         }
@@ -87,7 +87,7 @@ public class NumPlayers : MonoBehaviour
         
         filesSkins = System.IO.Directory.GetFiles(path, "*.asset");
         
-        GameObject div_skins = GameObject.Find("skins");
+        div_skins = GameObject.Find("skins");
 
         foreach(string filePath in filesSkins){
             GameObject newObj = Instantiate(skinPrefab, div_skins.transform);
@@ -97,10 +97,7 @@ public class NumPlayers : MonoBehaviour
 
     }
 
-    public void listenerSkin()
-    {
-        skinChosen = true;
-    }
+   
     
     public void listenerKeys(int key)
     {
@@ -121,7 +118,10 @@ public class NumPlayers : MonoBehaviour
                 }
                 players[currentPlayer].keys[currentKey] = e.keyCode;
                 keys[currentKey].text = e.keyCode.ToString();
-                currentKey = -1;
+                if (currentKey < 3 && incorrectKeys())
+                    currentKey++;
+                else
+                    currentKey = -1;
                 warning.SetActive(false);
             }
         }
@@ -136,6 +136,7 @@ public class NumPlayers : MonoBehaviour
     {
         players[currentPlayer].nickname = nickText.GetComponent<TMP_InputField>().text;
     }
+
     private bool valid()
     {
         if (currentPlayer==-1 || players==null || players[currentPlayer] == null)
@@ -143,22 +144,40 @@ public class NumPlayers : MonoBehaviour
             return false;
         }
         bool nickvoid = players[currentPlayer].nickname == null || players[currentPlayer].nickname == "";
-        bool incorrectkeys = false;
+        bool badkeys = incorrectKeys();
+        bool skinChosen = false;
+        
+        Skin [] listaSkins = div_skins.GetComponentsInChildren<Skin>();
+        foreach (Skin s in listaSkins)
+        {
+            if (s.chosen)
+            {
+                skinChosen = true;
+            } 
+        }
+
+
+        return !nickvoid && !badkeys && skinChosen;
+    }
+
+    private bool incorrectKeys()
+    {
+        bool incorrect = false;
         if (players[currentPlayer].keys != null)
         {
             foreach (var key in players[currentPlayer].keys)
             {
                 if (key == KeyCode.None || key == KeyCode.Minus)
                 {
-                    incorrectkeys = true;
+                    incorrect = true;
                 }
             }
         }
         else
         {
-            incorrectkeys = true;
+            incorrect = true;
         }
-        
-        return !nickvoid && !incorrectkeys && skinChosen;
+
+        return incorrect;
     }
 }

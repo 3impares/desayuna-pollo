@@ -12,12 +12,12 @@ using UnityEngine.UI;
 
 public class Game : NetworkBehaviour
 {
-    public Player[] players;
+    private Player[] players;
     public float holep;
     public int w, h, x, y;
     public bool[,] hwalls, vwalls;
     public Transform level, goal;
-    public GameObject floor, wall;
+    public GameObject floor, wall, playerPrefab;
     public CinemachineVirtualCamera cam;
 
     //contador de jugadores, provisional mientras se automatiza el nombre de los players
@@ -31,9 +31,29 @@ public class Game : NetworkBehaviour
         if (!IsOwner) Destroy(this);
     }
 
+    void generatePlayers() {
+        DataPlayer [] dataPlayers = ChangeScene.players;
+        print(JsonUtility.ToJson(dataPlayers));
+        players = new Player[dataPlayers.Length];
+        for(int i=0; i< dataPlayers.Length; i++)
+        {
+            players[i] = new Player();
+            players[i].initPlayer(dataPlayers[i]);
+            GameObject div_players = GameObject.Find("Players");
+            Instantiate(playerPrefab, div_players.transform);
+        }
+    }
+
+
     void Start()
     {
-        this.currentLevel++;
+
+        if (currentLevel == 0)
+        {
+            generatePlayers();
+            print(JsonUtility.ToJson(players));
+        }
+        currentLevel++;
 
         updateScores();
 
@@ -106,9 +126,7 @@ public class Game : NetworkBehaviour
             while (Vector3.Distance( p.transform.position, goal.position) < (w + h) / 4);
             p.setPlayer(localx, localy, hwalls, vwalls);
             
-            if (this.currentLevel==1 && p.nickname==null){
-                p.initPlayer("Player_"+numPlayers); 
-            }
+            
 
         }
         

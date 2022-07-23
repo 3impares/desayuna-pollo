@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : NetworkBehaviour 
 { 
@@ -10,6 +11,7 @@ public class Player : NetworkBehaviour
     private int currentScore;
     public string nickname;
     public KeyCode[] keys;
+    public Sprite skin;
 
     public override void OnNetworkSpawn() {
         if (!IsOwner) Destroy(this);
@@ -62,11 +64,17 @@ public class Player : NetworkBehaviour
         this.currentScore += 1;
     }
 
-    public void initPlayer (string nickname) {
+    public void initPlayer (DataPlayer dp) {
         //Al crearse el jugador cada partida, la puntuación es cero.
         this.currentScore=0;
-        this.nickname = nickname;
+        nickname = dp.nickname;
+        keys = dp.keys;
+        skin = dp.skin;
+
+        //GetComponent<SpriteRenderer>().sprite = skin;
     }
+
+   
 
     public bool isParentActive(){
         return true;//transform.parent.activeSelf;
