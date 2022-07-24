@@ -10,4 +10,10 @@ public static class ChangeScene
         players = dp;
         SceneManager.LoadScene(scene);
     }
+
+    
+    public static void loadLocalConfig(string scene)
+    {
+        SceneManager.LoadScene(scene);
+    }
 }
