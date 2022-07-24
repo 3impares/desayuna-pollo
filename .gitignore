@@ -65,8 +65,10 @@ ProjectSettings/ShaderGraphSettings.asset
 ProjectSettings/ProjectVersion.txt
 *packages-lock.json
 ProjectSettings/Packages/com.unity.learn.iet-framework/Settings.json
-
+ProjectSettings/boot.config
 
 #User Settings
 UserSettings/*
+
+
 
