@@ -12,12 +12,12 @@ using UnityEngine.UI;
 
 public class Game : NetworkBehaviour
 {
-    public Player[] players;
+    private GameObject[] players;
     public float holep;
     public int w, h, x, y;
     public bool[,] hwalls, vwalls;
     public Transform level, goal;
-    public GameObject floor, wall;
+    public GameObject floor, wall, playerPrefab;
     public CinemachineVirtualCamera cam;
 
     //contador de jugadores, provisional mientras se automatiza el nombre de los players
@@ -31,9 +31,28 @@ public class Game : NetworkBehaviour
         if (!IsOwner) Destroy(this);
     }
 
+    void generatePlayers() {
+        DataPlayer [] dataPlayers = ChangeScene.players;
+        players = new GameObject[dataPlayers.Length];
+        for(int i=0; i< dataPlayers.Length; i++)
+        {
+            
+            GameObject div_players = GameObject.Find("Players");
+            players[i] = Instantiate(playerPrefab, div_players.transform);
+            Player p = players[i].GetComponent<Player>();
+            p.initPlayer(dataPlayers[i]);
+        }
+    }
+
+
     void Start()
     {
-        this.currentLevel++;
+
+        if (currentLevel == 0)
+        {
+            generatePlayers();
+        }
+        currentLevel++;
 
         updateScores();
 
@@ -90,7 +109,7 @@ public class Game : NetworkBehaviour
         y = Random.Range(0, h);
         
         goal.position = new Vector3(x, y);
-        foreach (Player p in players)
+        foreach (GameObject p in players)
         {   
             //contador de jugadores, provisional mientras se automatiza el nombre de los players
             numPlayers++;
@@ -104,11 +123,9 @@ public class Game : NetworkBehaviour
                 p.transform.position = new Vector3(localx, localy);
             } 
             while (Vector3.Distance( p.transform.position, goal.position) < (w + h) / 4);
-            p.setPlayer(localx, localy, hwalls, vwalls);
+            p.GetComponent<Player>().setPlayer(localx, localy, hwalls, vwalls);
             
-            if (this.currentLevel==1 && p.nickname==null){
-                p.initPlayer("Player_"+numPlayers); 
-            }
+            
 
         }
         
@@ -117,16 +134,16 @@ public class Game : NetworkBehaviour
 
     void Update()
     {
-        foreach (Player p in players)
+        foreach (GameObject p in players)
         {
-            if (Vector3.Distance(p.transform.position, goal.position) < 0.12f)
+            if (Vector3.Distance(p.gameObject.transform.position, goal.position) < 0.12f)
             {
                 if (Random.Range(0, 5) < 3) w++;
                 else h++;
 
                 //Se actualiza la puntuación al ganador
-                p.victory();
-                Debug.Log("Nivel " + this.currentLevel + " terminado: El jugador " + p.getNickname() + " gana un punto y ahora tiene " + p.getScore() + " puntos");
+                p.GetComponent<Player>().victory();
+                Debug.Log("Nivel " + this.currentLevel + " terminado: El jugador " + p.GetComponent<Player>().getNickname() + " gana un punto y ahora tiene " + p.GetComponent<Player>().getScore() + " puntos");
 
                 Start();
             }
@@ -139,14 +156,12 @@ public class Game : NetworkBehaviour
         
         scores.text = "";
 
-        foreach (Player p in players)
+        foreach (GameObject p in players)
         {
-            if (p.isActiveAndEnabled){ //comprueba que el object esté activo
-               scores.text += p.getNickname().PadRight(12) + "\t" + p.getScore() + "\n";
-            }
+            print(p.GetComponent<Player>().getNickname());
+            scores.text += p.GetComponent<Player>().getNickname().PadRight(12) + "\t" + p.GetComponent<Player>().getScore() + "\n";
         }        
-
-        //Debug.Log(t); 
+ 
     }
 
 }

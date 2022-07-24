@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : NetworkBehaviour 
 { 
@@ -10,6 +11,7 @@ public class Player : NetworkBehaviour
     private int currentScore;
     public string nickname;
     public KeyCode[] keys;
+    public Sprite skin;
 
     public override void OnNetworkSpawn() {
         if (!IsOwner) Destroy(this);
@@ -18,21 +20,11 @@ public class Player : NetworkBehaviour
     {
         var dirs = new[]
         {
-            (x - 1, y, hwalls, x, y, Vector3.right, 90, KeyCode.A),
-            (x + 1, y, hwalls, x + 1, y, Vector3.right, 90, KeyCode.D),
-            (x, y - 1, vwalls, x, y, Vector3.up, 0, KeyCode.S),
-            (x, y + 1, vwalls, x, y + 1, Vector3.up, 0, KeyCode.W),
+            (x - 1, y, hwalls, x, y, Vector3.right, 90, keys[0]),
+            (x + 1, y, hwalls, x + 1, y, Vector3.right, 90, keys[3]),
+            (x, y - 1, vwalls, x, y, Vector3.up, 0, keys[1]),
+            (x, y + 1, vwalls, x, y + 1, Vector3.up, 0, keys[2]),
         };
-        if (id == 2)
-        {
-            dirs = new[]
-            {
-                (x - 1, y, hwalls, x, y, Vector3.right, 90, KeyCode.LeftArrow),
-                (x + 1, y, hwalls, x + 1, y, Vector3.right, 90, KeyCode.RightArrow),
-                (x, y - 1, vwalls, x, y, Vector3.up, 0, KeyCode.DownArrow),
-                (x, y + 1, vwalls, x, y + 1, Vector3.up, 0, KeyCode.UpArrow),
-            };
-        }
         foreach (var (nx, ny, wall, wx, wy, sh, ang, k) in dirs.OrderBy(d => Random.value))
             if (Input.GetKeyDown(k))
                 if (wall[wx, wy])
@@ -62,11 +54,18 @@ public class Player : NetworkBehaviour
         this.currentScore += 1;
     }
 
-    public void initPlayer (string nickname) {
+    public void initPlayer (DataPlayer dp) {
         //Al crearse el jugador cada partida, la puntuación es cero.
         this.currentScore=0;
-        this.nickname = nickname;
+        nickname = dp.nickname;
+        keys = dp.keys;
+        skin = dp.skin;
+        print(nickname);
+
+        GetComponent<SpriteRenderer>().sprite = skin;
     }
+
+   
 
     public bool isParentActive(){
         return true;//transform.parent.activeSelf;
