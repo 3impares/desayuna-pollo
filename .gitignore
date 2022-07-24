@@ -22,6 +22,7 @@
 # IDES cache directory
 .vs/
 .idea/
+.vscode/
 
 # Gradle cache directory
 .gradle/
@@ -67,5 +68,5 @@ ProjectSettings/Packages/com.unity.learn.iet-framework/Settings.json
 
 
 #User Settings
-UserSettings/
+UserSettings/*
 
