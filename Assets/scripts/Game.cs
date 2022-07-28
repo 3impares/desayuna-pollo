@@ -48,7 +48,7 @@ public class Game : NetworkBehaviour
     void Start()
     {
 
-        if (currentLevel == 0)
+        if (currentLevel == 0 && players!=null)
         {
             generatePlayers();
         }
@@ -109,43 +109,51 @@ public class Game : NetworkBehaviour
         y = Random.Range(0, h);
         
         goal.position = new Vector3(x, y);
-        foreach (GameObject p in players)
-        {   
-            //contador de jugadores, provisional mientras se automatiza el nombre de los players
-            numPlayers++;
-
-            var localx = 0;
-            var localy = 0;
-            do
+        if (players != null)
+        {
+            foreach (GameObject p in players)
             {
-                localx = Random.Range(0, w);
-                localy = Random.Range(0, h);
-                p.transform.position = new Vector3(localx, localy);
-            } 
-            while (Vector3.Distance( p.transform.position, goal.position) < (w + h) / 4);
-            p.GetComponent<Player>().setPlayer(localx, localy, hwalls, vwalls);
-            
-            
+                //contador de jugadores, provisional mientras se automatiza el nombre de los players
+                numPlayers++;
 
+                var localx = 0;
+                var localy = 0;
+                do
+                {
+                    localx = Random.Range(0, w);
+                    localy = Random.Range(0, h);
+                    p.transform.position = new Vector3(localx, localy);
+                } while (Vector3.Distance(p.transform.position, goal.position) < (w + h) / 4);
+
+                p.GetComponent<Player>().setPlayer(localx, localy, hwalls, vwalls);
+
+
+
+            }
         }
-        
+
         cam.m_Lens.OrthographicSize = Mathf.Pow(w / 3 + h / 2, 0.7f) + 1;
     }
 
     void Update()
     {
-        foreach (GameObject p in players)
+        if (players != null)
         {
-            if (Vector3.Distance(p.gameObject.transform.position, goal.position) < 0.12f)
+            foreach (GameObject p in players)
             {
-                if (Random.Range(0, 5) < 3) w++;
-                else h++;
+                if (Vector3.Distance(p.gameObject.transform.position, goal.position) < 0.12f)
+                {
+                    if (Random.Range(0, 5) < 3) w++;
+                    else h++;
 
-                //Se actualiza la puntuación al ganador
-                p.GetComponent<Player>().victory();
-                Debug.Log("Nivel " + this.currentLevel + " terminado: El jugador " + p.GetComponent<Player>().getNickname() + " gana un punto y ahora tiene " + p.GetComponent<Player>().getScore() + " puntos");
+                    //Se actualiza la puntuación al ganador
+                    p.GetComponent<Player>().victory();
+                    Debug.Log("Nivel " + this.currentLevel + " terminado: El jugador " +
+                              p.GetComponent<Player>().getNickname() + " gana un punto y ahora tiene " +
+                              p.GetComponent<Player>().getScore() + " puntos");
 
-                Start();
+                    Start();
+                }
             }
         }
 
@@ -156,12 +164,16 @@ public class Game : NetworkBehaviour
         
         scores.text = "";
 
-        foreach (GameObject p in players)
+        if (players != null)
         {
-            print(p.GetComponent<Player>().getNickname());
-            scores.text += p.GetComponent<Player>().getNickname().PadRight(12) + "\t" + p.GetComponent<Player>().getScore() + "\n";
-        }        
- 
+            foreach (GameObject p in players)
+            {
+                print(p.GetComponent<Player>().getNickname());
+                scores.text += p.GetComponent<Player>().getNickname().PadRight(12) + "\t" +
+                               p.GetComponent<Player>().getScore() + "\n";
+            }
+        }
+
     }
 
 }
