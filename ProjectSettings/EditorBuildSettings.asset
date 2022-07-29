@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/scenes/Local.unity
     guid: 93d4bf54b81b9c648817193ae51f69a5
+  - enabled: 1
+    path: Assets/scenes/GameOnline.unity
+    guid: d97d43188ec8d4e429c2771891662eff
   m_configObjects: {}

@@ -728,11 +728,11 @@ PlayerSettings:
     m_VersionName: 
   apiCompatibilityLevel: 6
   activeInputHandler: 0
-  cloudProjectId: 
+  cloudProjectId: 692b8967-2bdd-4ee9-b32c-6eb13b0bcaf7
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: 
-  organizationId: 
+  projectName: desayuno-pollo
+  organizationId: marcos855
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   playerDataPath: 

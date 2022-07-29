@@ -7,6 +7,14 @@ public class StartMenu : MonoBehaviour
 {
     public static void ClickLocalButton()
     {
-        ChangeScene.loadLocalConfig("Local");
+        ChangeScene.loadScene("Local");
+    }
+    public static void ClickCreateMatchButton()
+    {
+        ChangeScene.loadScene("GameOnline", true);
+    }
+    public static void ClickJoinMatchButton()
+    {
+        ChangeScene.loadScene("GameOnline", false);
     }
 }

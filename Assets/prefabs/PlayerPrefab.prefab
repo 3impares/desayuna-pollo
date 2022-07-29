@@ -259,8 +259,8 @@ MonoBehaviour:
   y: 0
   id: 1
   nickname: vaugar
-  keys: 
-  skin: {fileID: 0}
+  keys: 14010000120100001101000013010000
+  skin: {fileID: -813730786, guid: 57ffa6dafdffb194394eb1abcbd41f38, type: 3}
 --- !u!114 &2190052138213419277
 MonoBehaviour:
   m_ObjectHideFlags: 0

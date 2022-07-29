@@ -27,9 +27,10 @@ public class Player : NetworkBehaviour
         };
         foreach (var (nx, ny, wall, wx, wy, sh, ang, k) in dirs.OrderBy(d => Random.value))
             if (Input.GetKeyDown(k))
-                if (wall[wx, wy])
-                    transform.position = Vector3.Lerp(transform.position, new Vector3(nx, ny), 0.1f);
-                else (x, y) = (nx, ny);
+                (x, y) = (nx, ny);
+                //if (wall[wx, wy])
+                 //   transform.position = Vector3.Lerp(transform.position, new Vector3(nx, ny), 0.1f);
+                //else (x, y) = (nx, ny);
 
         transform.position = Vector3.Lerp(transform.position, new Vector3(x, y), Time.deltaTime * 12);
     }
